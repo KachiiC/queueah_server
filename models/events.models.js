@@ -5,7 +5,7 @@ const { urlTypes } = require("../helpers/validate.helpers");
 const eventsSchema = new Schema({
   address: String,
   adults_only: Boolean,
-  attendees: Number,
+  attendees: { type: Number, default: 0 },
   date: Date,
   description: String,
   event_name: String,
