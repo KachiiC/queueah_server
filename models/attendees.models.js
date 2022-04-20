@@ -5,6 +5,7 @@ const { emailTypes } = require("../helpers/validate.helpers");
 
 const attendeesSchema = new Schema({
   event_id: String,
+  event_name: String,
   email: emailTypes,
   first_name: String,
   gender: genderTypes,
