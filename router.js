@@ -8,6 +8,7 @@ const {
   getAttendees,
   // EVENTS
   addEvent,
+  getEvent,
   // ORGANIZERS
   addOrganizer,
   getOrganizer,
@@ -16,12 +17,13 @@ const {
 router
   .get("", (ctx) => (ctx.body = "home route"))
   // ATTENDEES
-  .get("/attendees", getAttendees)
-  .post("/attendees", addAttendees)
+  .get("/attendees/:event_id", getAttendees)
+  .post("/attendees/:event_id", addAttendees)
   // EVENTS
-  .post("/events", addEvent)
+  .post("/events/:organizer_id", addEvent)
+  .get("/event/:event_id", getEvent)
   // ORGANIZERS
-  .get("/organizer/:id", getOrganizer)
+  .get("/organizer/:organizer_id", getOrganizer)
   .post("/organizer", addOrganizer);
 
 module.exports = router;
