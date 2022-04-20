@@ -4,7 +4,7 @@ const { emailTypes } = require("../helpers/validate.helpers");
 
 const organizersSchema = new Schema({
   email: emailTypes,
-  events: [String],
+  events: [Object],
   name: String,
 });
 
