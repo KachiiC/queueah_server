@@ -18,7 +18,7 @@ const addEvent = async (ctx) => {
 
 const getEvents = async (ctx) => {
   try {
-    const res = await Events.find();
+    const res = await Events.find({ organizer: ctx.params.id });
     ctx.body = res;
     ctx.status = 200;
   } catch (err) {
