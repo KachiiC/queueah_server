@@ -1,4 +1,4 @@
-require('dotenv').config
+require('dotenv').config()
 const Koa = require("koa");
 const koa_parser = require("koa-bodyparser");
 const koa_cors = require("@koa/cors");
