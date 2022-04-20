@@ -1,13 +1,13 @@
 const Events = require("../models/events.models");
 
 const addEvent = async (ctx) => {
-  
   try {
-    // Takes request and creates data in the collection
+    // take the request body
     const res = await ctx.request.body;
+    // create data on the Events collection
     await Events.create(res);
-    // finds the data we just created and returns it as the body of request
-    const db_data = await Events.findOne({ ...ctx.request.body });
+    // finds the data we just created and returns it as the body of response
+    const db_data = await Events.findOne({ ...res });
     ctx.body = db_data;
     ctx.status = 201;
   } catch (err) {
@@ -17,7 +17,6 @@ const addEvent = async (ctx) => {
 };
 
 const getEvents = async (ctx) => {
-  
   try {
     const res = await Events.find();
     ctx.body = res;

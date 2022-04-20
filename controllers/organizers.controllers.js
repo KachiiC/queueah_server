@@ -2,8 +2,9 @@ const Organizers = require("../models/organizers.models");
 
 const addOrganizer = async (ctx) => {
   try {
-    // Takes request and creates data in the collection
+    // take the request body
     const res = await ctx.request.body;
+    // create data on the Organizers collection
     await Organizers.create(res);
     // finds the data we just created and returns it as the body of request
     const db_data = await Organizers.findOne({ ...ctx.request.body });
