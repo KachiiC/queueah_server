@@ -1,6 +1,6 @@
 const mongoose = require(".");
-const { urlTypes } = require("../helpers/validate.helpers");
 const Schema = mongoose.Schema;
+const { urlTypes } = require("../helpers/validate.helpers");
 
 const eventsSchema = new Schema({
   address: String,
