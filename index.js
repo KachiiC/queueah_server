@@ -4,7 +4,7 @@ const koa_cors = require("@koa/cors");
 
 const router = require("./router");
 const app = new Koa();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.use(koa_parser())
 .use(koa_cors())
