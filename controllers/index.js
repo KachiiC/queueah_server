@@ -1,5 +1,5 @@
 const { addAttendees, getAttendees } = require("./attendees.controllers");
-const { addEvent, getEvents } = require("./events.controllers");
+const { addEvent, getEvent } = require("./events.controllers");
 const { addOrganizer, getOrganizer } = require("./organizers.controllers");
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
   getAttendees,
   // EVENTS
   addEvent,
-  getEvents,
+  getEvent,
   // ORGANIZERS
   addOrganizer,
   getOrganizer,
