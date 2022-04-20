@@ -9,6 +9,6 @@ const scannedTypes = {
 };
 
 module.exports = {
-    genderTypes,
-    scannedTypes
-}
+  genderTypes,
+  scannedTypes,
+};
