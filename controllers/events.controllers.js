@@ -16,17 +16,6 @@ const addEvent = async (ctx) => {
   }
 };
 
-const getEvents = async (ctx) => {
-  try {
-    const res = await Events.find({ organizer: ctx.params.id });
-    ctx.body = res;
-    ctx.status = 200;
-  } catch (err) {
-    ctx.status = 500;
-    throw err;
-  }
-};
-
 module.exports = {
   addEvent,
   getEvents,
