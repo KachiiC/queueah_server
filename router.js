@@ -1,4 +1,7 @@
+// ROUTER
 const Router = require("koa-router");
+const router = new Router();
+// CONTROLLERS
 const {
   // ATTENDEES
   addAttendees,
@@ -10,8 +13,6 @@ const {
   addOrganizer,
   getOrganizer,
 } = require("./controllers");
-
-const router = new Router();
 
 router
   .get("", (ctx) => (ctx.body = "home route"))
