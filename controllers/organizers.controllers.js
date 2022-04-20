@@ -6,7 +6,7 @@ const addOrganizer = async (ctx) => {
     // take the request body
     const res = await ctx.request.body;
     // create data on the Organizers collection
-    await Organizers.create(res);
+    await Organizers.create({...res, organizer: ctx.params.id});
     // finds the data we just created and returns it as the body of request
     const db_data = await Organizers.findOne({ ...ctx.request.body });
     ctx.body = db_data;
