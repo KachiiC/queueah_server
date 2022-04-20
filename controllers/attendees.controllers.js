@@ -1,3 +1,5 @@
+const Attendees = require("../models/attendees.models");
+
 const addAttendees = async (ctx) => {
   try {
     ctx.body = "added attendees";
@@ -10,7 +12,8 @@ const addAttendees = async (ctx) => {
 
 const getAttendees = async (ctx) => {
   try {
-    ctx.body = "got attendees";
+    const res = await Attendees.find();
+    ctx.body = res;
     ctx.status = 200;
   } catch (err) {
     ctx.status = 500;
