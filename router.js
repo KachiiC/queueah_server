@@ -20,7 +20,7 @@ router
   .get("/attendees", getAttendees)
   .post("/attendees", addAttendees)
   // EVENTS
-  .get("/events", getEvents)
+  .get("/events/:id", getEvents)
   .post("/events", addEvent)
   // ORGANIZERS
   .get("/organizers/:id", getOrganizer)
