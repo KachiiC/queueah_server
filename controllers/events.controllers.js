@@ -18,5 +18,4 @@ const addEvent = async (ctx) => {
 
 module.exports = {
   addEvent,
-  getEvents,
 };

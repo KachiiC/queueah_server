@@ -8,7 +8,6 @@ const {
   getAttendees,
   // EVENTS
   addEvent,
-  getEvents,
   // ORGANIZERS
   addOrganizer,
   getOrganizer,
