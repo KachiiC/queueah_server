@@ -16,4 +16,4 @@ const emailType = {
   ],
 };
 
-module.exports = emailType
+module.exports = emailType;
