@@ -1,24 +1,26 @@
 const Attendees = require("../models/attendees.models");
 
 const addAttendees = async (ctx) => {
+  const { body, request, status } = ctx;
   try {
-    const res = await ctx.request.body;
-    await Attendees.create(res)
-    ctx.body = res;
-    ctx.status = 200;
+    const res = await request.body;
+    await Attendees.create(res);
+    body = res;
+    status = 201;
   } catch (err) {
-    ctx.status = 500;
+    status = 500;
     throw err;
   }
 };
 
 const getAttendees = async (ctx) => {
+  const { body, status } = ctx;
   try {
     const res = await Attendees.find();
-    ctx.body = res;
-    ctx.status = 200;
+    body = res;
+    status = 200;
   } catch (err) {
-    ctx.status = 500;
+    status = 500;
     throw err;
   }
 };
