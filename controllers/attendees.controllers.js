@@ -2,7 +2,9 @@ const Attendees = require("../models/attendees.models");
 
 const addAttendees = async (ctx) => {
   try {
-    ctx.body = "added attendees";
+    const res = await ctx.request.body;
+    await Attendees.create(res)
+    ctx.body = res;
     ctx.status = 200;
   } catch (err) {
     ctx.status = 500;
