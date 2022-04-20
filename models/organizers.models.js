@@ -1,9 +1,10 @@
 const mongoose = require(".");
+const emailType = require("../helpers/email.helper");
 const Schema = mongoose.Schema;
 
 const organizersSchema = new Schema({
   name: String,
-  email: String,
+  email: emailType,
   events: [String],
 });
 
