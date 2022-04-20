@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const { addAttendees, getAttendees } = require("./controllers/attendees.controllers");
 const { getEvents, addEvent } = require("./controllers/events.controllers");
+const { getOrganizer, addOrganizer } = require("./controllers/organizers.controllers");
 
 const router = new Router();
 
@@ -11,6 +12,9 @@ router
   .post("/attendees", addAttendees)
   // EVENTS
   .get("/events", getEvents)
-  .post("/events", addEvent);
+  .post("/events", addEvent)
+  // ORGANIZERS
+  .get("/organizers", getOrganizer)
+  .post("/organizers", addOrganizer);
 
 module.exports = router;
