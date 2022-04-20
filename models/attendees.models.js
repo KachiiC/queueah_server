@@ -1,11 +1,11 @@
 const mongoose = require(".");
-const emailType = require("../helpers/email.helper");
-const { scannedTypes, genderTypes } = require("../helpers/attendee.helpers");
 const Schema = mongoose.Schema;
+const { scannedTypes, genderTypes } = require("../helpers/attendee.helpers");
+const { emailTypes } = require("../helpers/validate.helpers");
 
 const attendeesSchema = new Schema({
   event_id: String,
-  email: emailType,
+  email: emailTypes,
   first_name: String,
   gender: genderTypes,
   scanned: scannedTypes,

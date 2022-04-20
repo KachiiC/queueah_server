@@ -1,9 +1,9 @@
 const mongoose = require(".");
-const emailType = require("../helpers/email.helper");
 const Schema = mongoose.Schema;
+const { emailTypes } = require("../helpers/validate.helpers");
 
 const organizersSchema = new Schema({
-  email: emailType,
+  email: emailTypes,
   events: [String],
   name: String,
 });
