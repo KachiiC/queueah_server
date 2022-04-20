@@ -23,7 +23,7 @@ router
   .get("/events", getEvents)
   .post("/events", addEvent)
   // ORGANIZERS
-  .get("/organizers", getOrganizer)
+  .get("/organizers/:id", getOrganizer)
   .post("/organizers", addOrganizer);
 
 module.exports = router;
