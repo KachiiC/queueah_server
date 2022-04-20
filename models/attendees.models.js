@@ -1,24 +1,14 @@
-"use strict";
 const mongoose = require(".");
 const emailType = require("../helpers/email.helper");
+const { scannedTypes, genderTypes } = require("../helpers/attendee.helpers");
 const Schema = mongoose.Schema;
-
-const genderTypes = {
-  type: String,
-  enum: ["male", "female"],
-};
-
-const scannedType = {
-  type: Boolean,
-  default: false,
-};
 
 const attendeesSchema = new Schema({
   event_id: String,
   email: emailType,
   first_name: String,
   gender: genderTypes,
-  scanned: scannedType,
+  scanned: scannedTypes,
   surname: String,
   tickets: Number,
 });
