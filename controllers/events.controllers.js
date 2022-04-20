@@ -1,3 +1,5 @@
+const Events = require('../models/events.models')
+
 const addEvent = async (ctx) => {
   try {
     ctx.body = "add event";
@@ -10,7 +12,8 @@ const addEvent = async (ctx) => {
 
 const getEvents = async (ctx) => {
   try {
-    ctx.body = "get event";
+    const res = await Events.find()
+    ctx.body = res
     ctx.status = 200;
   } catch (err) {
     ctx.status = 500;
