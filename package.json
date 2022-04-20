@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/KachiiC/queueah_server/issues"
   },
-  "homepage": "https://github.com/KachiiC/queueah_server#readme"
+  "homepage": "https://github.com/KachiiC/queueah_server#readme",
+  "dependencies": {
+    "@koa/cors": "^3.3.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0"
+  }
 }
