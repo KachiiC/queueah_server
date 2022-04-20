@@ -1,12 +1,15 @@
 const Router = require("koa-router");
 const {
-    addAttendees, 
-    getAttendees,
-    getEvents, 
-    addEvent,
-    getOrganizer, 
-    addOrganizer
-} = require('./controllers')
+  // ATTENDEES
+  addAttendees,
+  getAttendees,
+  // EVENTS
+  addEvent,
+  getEvents,
+  // ORGANIZERS
+  addOrganizer,
+  getOrganizer,
+} = require("./controllers");
 
 const router = new Router();
 
