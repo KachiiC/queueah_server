@@ -1,3 +1,5 @@
+const Organizers = require("../models/organizers.models");
+
 const addOrganizer = async (ctx) => {
   try {
     ctx.body = "add organizer";
@@ -10,7 +12,8 @@ const addOrganizer = async (ctx) => {
 
 const getOrganizer = async (ctx) => {
   try {
-    ctx.body = "get organizer";
+    const res = await Organizers.find();
+    ctx.body = res;
     ctx.status = 200;
   } catch (err) {
     ctx.status = 500;
