@@ -1,3 +1,4 @@
+const Events = require("../models/events.models");
 const Organizers = require("../models/organizers.models");
 
 const addOrganizer = async (ctx) => {
@@ -18,7 +19,14 @@ const addOrganizer = async (ctx) => {
 
 const getOrganizer = async (ctx) => {
   try {
-    const res = await Organizers.find();
+    // get all events by organizer from params
+    const events = await Events.find({ organizer: ctx.params.id });
+    // update organizer events accordingly
+    const res = await Organizers.findByIdAndUpdate(
+      { _id: ctx.params.id },
+      { events: events }
+    );
+    // return organizer
     ctx.body = res;
     ctx.status = 200;
   } catch (err) {
