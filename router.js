@@ -10,8 +10,8 @@ const {
   addEvent,
   getEvent,
   // ORGANIZERS
-  addOrganizer,
-  getOrganizer,
+  // addOrganizer,
+  organizerFinder,
 } = require("./controllers");
 
 router
@@ -23,7 +23,7 @@ router
   .post("/events/:organizer_id", addEvent)
   .get("/event/:organizer_id/:event_id", getEvent)
   // ORGANIZERS
-  .get("/organizer/:organizer_id", getOrganizer)
-  .post("/organizer", addOrganizer);
+  .get("/organizer/:organizer_id", organizerFinder)
+  // .post("/organizer", addOrganizer);
 
 module.exports = router;
