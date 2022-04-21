@@ -21,7 +21,7 @@ router
   .post("/attendees/:organizer_id/:event_id", addAttendees)
   // EVENTS
   .post("/events/:organizer_id", addEvent)
-  .get("/event/:event_id", getEvent)
+  .get("/event/:organizer_id/:event_id", getEvent)
   // ORGANIZERS
   .get("/organizer/:organizer_id", getOrganizer)
   .post("/organizer", addOrganizer);

@@ -33,11 +33,11 @@ const addAttendees = async (ctx) => {
         ctx.status = 201;
       } else {
         ctx.body === "unauthorized access"
-        ctx.status = 404
+        ctx.status = 403
       }
     }
   } catch (err) {
-    ctx.status = 500;
+    ctx.status = 405;
     throw err;
   }
 };
@@ -64,7 +64,7 @@ const getAttendees = async (ctx) => {
         ctx.status = 200;
       } else {
         ctx.body = "unauthorized access";
-        ctx.status = 404;
+        ctx.status = 403;
       }
     }
   } catch (err) {

@@ -35,19 +35,25 @@ const getEvent = async (ctx) => {
   try {
     // check if id is same as input event_id
     const check = await Events.exists(_idArg);
-
     if (check === null) {
       // if event does not exist return this
       ctx.body = "event does not exist";
       ctx.status = 404;
     } else {
-      // count total number of attendees for this event
-      const total = await Attendees.countDocuments({ event_id: input_id });
-      // update number of attendees for this event
-      await Events.findOneAndUpdate(_idArg, { attendees: total });
-      // return the event
-      ctx.body = await Events.findOne(_idArg);
-      ctx.status = 200;
+      const event = await Events.findOne({ _id: ctx.params.event_id });
+
+      if (event.organizer === ctx.params.organizer_id) {
+        // count total number of attendees for this event
+        const total = await Attendees.countDocuments({ event_id: input_id });
+        // update number of attendees for this event
+        await Events.findOneAndUpdate(_idArg, { attendees: total });
+        // return the event
+        ctx.body = await Events.findOne(_idArg);
+        ctx.status = 200;
+      } else {
+        ctx.body = "unauthorized access";
+        ctx.status = 403;
+      }
     }
   } catch (err) {
     ctx.status = 500;
