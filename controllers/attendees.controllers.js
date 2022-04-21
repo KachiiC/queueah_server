@@ -25,15 +25,28 @@ const addAttendees = async (ctx) => {
             event_id: event._id,
           });
         };
-  
+
         // if body is array, create for each object in body, otherwise just create on body
         Array.isArray(res) ? res.forEach((obj) => creator(obj)) : creator(res);
-        // return context of body
-        ctx.body = res;
+
+        // count attendees for event
+        const new_total = await Attendees.countDocuments({
+          event_id: ctx.params.event_id,
+        });
+
+        // update event
+        await Events.findOneAndUpdate(evt_params, { attendees: new_total });
+
+        // if array return array, if not return object
+        const returnLogic = Array.isArray(res)
+          ? await Attendees.find({ res })
+          : await Attendees.findOne(res);
+
+        ctx.body = returnLogic;
         ctx.status = 201;
       } else {
-        ctx.body === "unauthorized access"
-        ctx.status = 403
+        ctx.body === "unauthorized access";
+        ctx.status = 403;
       }
     }
   } catch (err) {

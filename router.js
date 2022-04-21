@@ -17,13 +17,12 @@ const {
 router
   .get("", (ctx) => (ctx.body = "home route"))
   // ATTENDEES
-  .get("/attendees/:organizer_id/:event_id", getAttendees)
-  .post("/attendees/:organizer_id/:event_id", addAttendees)
+  .get("/attendees_list/:organizer_id/:event_id", getAttendees)
+  .post("/add_attendees/:organizer_id/:event_id", addAttendees)
   // EVENTS
-  .post("/events/:organizer_id", addEvent)
+  .post("/add_event/:organizer_id", addEvent)
   .get("/event/:organizer_id/:event_id", getEvent)
   // ORGANIZERS
   .get("/organizer/:organizer_email", organizerFinder)
-  // .post("/organizer", addOrganizer);
 
 module.exports = router;
