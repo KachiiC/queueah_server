@@ -1,6 +1,6 @@
 const { addAttendees, getAttendees } = require("./attendees.controllers");
 const { addEvent, getEvent } = require("./events.controllers");
-const { addOrganizer, getOrganizer } = require("./organizers.controllers");
+const { organizerFinder } = require("./organizers.controllers");
 
 module.exports = {
   // ATTENDEES
@@ -10,6 +10,5 @@ module.exports = {
   addEvent,
   getEvent,
   // ORGANIZERS
-  addOrganizer,
-  getOrganizer,
+  organizerFinder
 };
