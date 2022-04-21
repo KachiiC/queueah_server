@@ -100,20 +100,45 @@ const scanAttendees = async (ctx) => {
       ctx.status = 404;
     } else {
       const event = await Events.findOne(evt_params);
+
       if (event.organizer === organizer_id) {
-        // gets attendees based on event_id passed in url
-        const res = await Attendees.findOneAndUpdate({
+        // correct attendee
+        const event_attendee = {
           _id: attendee_id,
           event_id: event_id,
-        }, {
-          scanned: true
+        };
+
+        const attendee = await Attendees.exists({
+          ...event_attendee,
+          scanned: false,
         });
 
-        ctx.body = res;
-        ctx.status = 200;
-      } else {
-        ctx.body = "unauthorized access";
-        ctx.status = 403;
+        if (attendee === null) {
+          ctx.body = "unauthorized access";
+          ctx.status = 403;
+        } else {
+          // gets attendees based on event_id passed in url
+          await Attendees.findOneAndUpdate(event_attendee, {
+            scanned: true,
+          });
+
+          const now_scanned = await Attendees.countDocuments({
+            event_id: event_id,
+            scanned: true,
+          });
+
+          const yet_to_scan = await Attendees.countDocuments({
+            event_id: event_id,
+            scanned: false,
+          });
+
+          await Events.findOneAndUpdate(evt_params, {
+            admitted: now_scanned,
+            not_admitted: yet_to_scan,
+          });
+          ctx.body = "scanned";
+          ctx.status = 200;
+        }
       }
     }
   } catch (err) {

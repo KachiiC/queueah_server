@@ -17,7 +17,7 @@ const addEvent = async (ctx) => {
     } else {
       // if they do exist create the event based on the input body
       // orgainzer becomes req_id
-      await Events.create({...input_body, organizer: req_id});
+      await Events.create({...input_body, organizer: req_id, admitted: 0, not_admitted: 0});
       // // finds the data we just created and returns it as the body of response
       ctx.body = await Events.findOne(input_body);
       ctx.status = 201;
@@ -46,8 +46,12 @@ const getEvent = async (ctx) => {
       if (event.organizer === ctx.params.organizer_id) {
         // count total number of attendees for this event
         const total = await Attendees.countDocuments({ event_id: input_id });
+        const yet_to_scan = await Attendees.countDocuments({
+          event_id: ctx.params.event_id,
+          scanned: false,
+        });
         // update number of attendees for this event
-        await Events.findOneAndUpdate(_idArg, { attendees: total });
+        await Events.findOneAndUpdate(_idArg, { attendees: total, not_admitted: yet_to_scan });
         // return the event
         ctx.body = await Events.findOne(_idArg);
         ctx.status = 200;
