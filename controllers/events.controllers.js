@@ -9,14 +9,15 @@ const addEvent = async (ctx) => {
   const input_body = ctx.request.body;
   try {
     // check if user exists by checking the email passed
-    const check = await Organizers.exists({ email: req_id });
+    const check = await Organizers.exists({ _id: req_id });
     if (check === null) {
       // if they do not exist return this statement to body
       ctx.body = "user does not exist";
       ctx.status = 404;
     } else {
       // if they do exist create the event based on the input body
-      await Events.create(input_body);
+      // orgainzer becomes req_id
+      await Events.create({...input_body, organizer: req_id});
       // // finds the data we just created and returns it as the body of response
       ctx.body = await Events.findOne(input_body);
       ctx.status = 201;
