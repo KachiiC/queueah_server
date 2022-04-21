@@ -10,8 +10,7 @@ const attendeesSchema = new Schema({
   first_name: String,
   gender: genderTypes,
   scanned: scannedTypes,
-  surname: String,
-  tickets: Number,
+  surname: String
 });
 
 const Attendees = mongoose.model("attendees", attendeesSchema);
