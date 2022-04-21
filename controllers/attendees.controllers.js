@@ -86,7 +86,45 @@ const getAttendees = async (ctx) => {
   }
 };
 
+const scanAttendees = async (ctx) => {
+  // param arguments
+  const { attendee_id, event_id, organizer_id } = ctx.params;
+  const evt_params = { _id: event_id };
+  try {
+    // check if event exists
+    const check = await Events.exists(evt_params);
+
+    if (check == null) {
+      // if event does not exist return this
+      ctx.body = "event does not exist";
+      ctx.status = 404;
+    } else {
+      const event = await Events.findOne(evt_params);
+      if (event.organizer === organizer_id) {
+        // gets attendees based on event_id passed in url
+        const res = await Attendees.findOneAndUpdate({
+          _id: attendee_id,
+          event_id: event_id,
+        }, {
+          scanned: true
+        });
+
+        ctx.body = res;
+        ctx.status = 200;
+      } else {
+        ctx.body = "unauthorized access";
+        ctx.status = 403;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    ctx.status = 404;
+    throw err;
+  }
+};
+
 module.exports = {
   addAttendees,
   getAttendees,
+  scanAttendees,
 };
