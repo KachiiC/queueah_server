@@ -17,8 +17,8 @@ const {
 router
   .get("", (ctx) => (ctx.body = "home route"))
   // ATTENDEES
-  .get("/attendees/:event_id", getAttendees)
-  .post("/attendees/:event_id", addAttendees)
+  .get("/attendees/:organizer_id/:event_id", getAttendees)
+  .post("/attendees/:organizer_id/:event_id", addAttendees)
   // EVENTS
   .post("/events/:organizer_id", addEvent)
   .get("/event/:event_id", getEvent)

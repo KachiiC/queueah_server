@@ -7,7 +7,7 @@ const addOrganizer = async (ctx) => {
   try {
     // check if organizers exists by email
     const check = await Organizers.exists({ email: req_body.email });
-    // check doesn't exist create them, otherwise they exist
+    // if they don't exist create them, otherwise they already exist
     const res =
       check === null ? await Organizers.create(req_body) : "User exists";
     // return result
