@@ -99,6 +99,7 @@ const scanAttendees = async (ctx) => {
       ctx.body = "event does not exist";
       ctx.status = 404;
     } else {
+
       const event = await Events.findOne(evt_params);
 
       if (event.organizer === organizer_id) {
@@ -114,7 +115,7 @@ const scanAttendees = async (ctx) => {
         });
 
         if (attendee === null) {
-          ctx.body = "unauthorized access";
+          ctx.body = "already scanned";
           ctx.status = 403;
         } else {
           // gets attendees based on event_id passed in url
@@ -136,9 +137,12 @@ const scanAttendees = async (ctx) => {
             admitted: now_scanned,
             not_admitted: yet_to_scan,
           });
-          ctx.body = "scanned";
+          ctx.body = "now scanned";
           ctx.status = 200;
         }
+      } else {
+        ctx.body = "unauthorised access";
+        ctx.status = 404
       }
     }
   } catch (err) {

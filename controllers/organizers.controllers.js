@@ -1,3 +1,4 @@
+const Attendees = require("../models/attendees.models");
 const Events = require("../models/events.models");
 const Organizers = require("../models/organizers.models");
 
@@ -26,6 +27,7 @@ const organizerFinder = async (ctx) => {
         // get all events by organizer from params
         const events = await Events.find({ organizer: check._id });
         // update organizer events accordingly
+
         const res = await Organizers.findOneAndUpdate(
           // find organizer by email
           { _id: check._id },

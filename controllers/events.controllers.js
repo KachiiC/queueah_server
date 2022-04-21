@@ -46,10 +46,12 @@ const getEvent = async (ctx) => {
       if (event.organizer === ctx.params.organizer_id) {
         // count total number of attendees for this event
         const total = await Attendees.countDocuments({ event_id: input_id });
+
         const yet_to_scan = await Attendees.countDocuments({
           event_id: ctx.params.event_id,
           scanned: false,
         });
+
         // update number of attendees for this event
         await Events.findOneAndUpdate(_idArg, { attendees: total, not_admitted: yet_to_scan });
         // return the event
