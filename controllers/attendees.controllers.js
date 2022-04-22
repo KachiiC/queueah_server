@@ -96,7 +96,9 @@ const scanAttendees = async (ctx) => {
 
     if (check == null) {
       // if event does not exist return this
-      ctx.body = "event does not exist";
+      ctx.body = {
+        result: "event does not exist"
+      };
       ctx.status = 404;
     } else {
 
@@ -115,8 +117,11 @@ const scanAttendees = async (ctx) => {
         });
 
         if (attendee === null) {
-          ctx.body = "already scanned";
-          ctx.status = 403;
+          ctx.body = {
+            result: "already scanned",
+            attendee: await Attendees.findOne({...event_attendee})
+          };
+          ctx.status = 200;
         } else {
           // gets attendees based on event_id passed in url
           await Attendees.findOneAndUpdate(event_attendee, {
@@ -137,7 +142,10 @@ const scanAttendees = async (ctx) => {
             admitted: now_scanned,
             not_admitted: yet_to_scan,
           });
-          ctx.body = "now scanned";
+          ctx.body = {
+            result: "now scanned",
+            attendee: await Attendees.findOne({...event_attendee})
+          };
           ctx.status = 200;
         }
       } else {
