@@ -26,5 +26,7 @@ router
   .get("/event/:organizer_id/:event_id", getEvent)
   // ORGANIZERS
   .put("/organizer/:organizer_email", organizerFinder)
+  // EMAIL
+  
 
 module.exports = router;
