@@ -119,7 +119,7 @@ const scanAttendees = async (ctx) => {
         if (attendee === null) {
           ctx.body = {
             result: "already scanned",
-            attendee: await Attendees.findOne({...event_attendee})
+            attendee: await Attendees.findOne({ ...event_attendee })
           };
           ctx.status = 200;
         } else {
@@ -144,7 +144,7 @@ const scanAttendees = async (ctx) => {
           });
           ctx.body = {
             result: "now scanned",
-            attendee: await Attendees.findOne({...event_attendee})
+            attendee: await Attendees.findOne({ ...event_attendee })
           };
           ctx.status = 200;
         }
