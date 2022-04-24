@@ -10,9 +10,10 @@ const {
   addEvent,
   getEvent,
   // ORGANIZERS
-  // addOrganizer,
   organizerFinder,
   scanAttendees,
+  // EMAIL
+  sendEventEmails
 } = require("./controllers");
 
 router
@@ -27,6 +28,6 @@ router
   // ORGANIZERS
   .put("/organizer/:organizer_email", organizerFinder)
   // EMAIL
-  
+  .get("/email/:event_id", sendEventEmails)  
 
 module.exports = router;
