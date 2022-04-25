@@ -1,4 +1,5 @@
 // ROUTER
+const KoaBody = require('koa-body')
 const Router = require("koa-router");
 const router = new Router();
 // CONTROLLERS
@@ -13,21 +14,28 @@ const {
   organizerFinder,
   scanAttendees,
   // EMAIL
-  sendEventEmails
+  sendEventEmails,
+  deleteAttendee
 } = require("./controllers");
 
+const bodyArg = { 
+  multipart: true, 
+  uploadDir: '.' 
+}
+
 router
-  .get("", (ctx) => (ctx.body = "home route"))
+  .get("", ctx => ctx.body = "Home route")
   // ATTENDEES
-  .get("/attendees_list/:organizer_id/:event_id", getAttendees)
-  .post("/add_attendees/:organizer_id/:event_id", addAttendees)
-  .put("/scan/:organizer_id/:event_id/:attendee_id", scanAttendees)
+  .get("/attendees_list/", getAttendees)
+  .post("/add_attendees/:input_organizer/:input_event", KoaBody(bodyArg), addAttendees)
+  .delete("/delete_attendee/:attendee_id", deleteAttendee)
+  .put("/scan/:attendee_id", scanAttendees)
   // EVENTS
-  .post("/add_event/:organizer_id", addEvent)
-  .get("/event/:organizer_id/:event_id", getEvent)
+  .post("/add_event", addEvent)
+  .get("/events_list", getEvent)
   // ORGANIZERS
-  .put("/organizer/:organizer_email", organizerFinder)
+  .put("/organizer", organizerFinder)
   // EMAIL
-  .get("/email/:event_id", sendEventEmails)  
+  .get("/email", sendEventEmails)
 
 module.exports = router;

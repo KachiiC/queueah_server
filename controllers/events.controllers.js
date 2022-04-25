@@ -3,63 +3,46 @@ const Events = require("../models/events.models");
 const Organizers = require("../models/organizers.models");
 
 const addEvent = async (ctx) => {
-  // id from params
-  const req_id = ctx.params.organizer_id;
+
   // input body
-  const input_body = ctx.request.body;
+  const { input_body, input_organizer } = ctx.request.body;
   try {
     // check if user exists by checking the email passed
-    const check = await Organizers.exists({ _id: req_id });
+    const check = await Organizers.exists({ _id: input_organizer });
     if (check === null) {
       // if they do not exist return this statement to body
-      ctx.body = "user does not exist";
+      ctx.body = {
+        result: "Organizer does not exist!",
+        event: null
+      };
       ctx.status = 404;
     } else {
-      // if they do exist create the event based on the input body
-      // orgainzer becomes req_id
-      await Events.create({...input_body, organizer: req_id, admitted: 0, not_admitted: 0});
-      // // finds the data we just created and returns it as the body of response
-      ctx.body = await Events.findOne(input_body);
-      ctx.status = 201;
-    }
-  } catch (err) {
-    ctx.status = 500;
-    throw err;
-  }
-};
 
-const getEvent = async (ctx) => {
-  // event_id passed through url
-  const input_id = ctx.params.event_id;
-  // arg that will be used to check if id is same as input event_id
-  const _idArg = { _id: input_id };
-  try {
-    // check if id is same as input event_id
-    const check = await Events.exists(_idArg);
-    if (check === null) {
-      // if event does not exist return this
-      ctx.body = "event does not exist";
-      ctx.status = 404;
-    } else {
-      const event = await Events.findOne({ _id: ctx.params.event_id });
+      const checkEvent = await Events.exists(input_body);
 
-      if (event.organizer === ctx.params.organizer_id) {
-        // count total number of attendees for this event
-        const total = await Attendees.countDocuments({ event_id: input_id });
+      if (checkEvent === null) {
+        // if event do not exist the event based on the input body
+        const eventBody = {
+          ...input_body,
+          organizer: input_organizer,
+          admitted: 0,
+          not_admitted: 0
+        }
 
-        const yet_to_scan = await Attendees.countDocuments({
-          event_id: ctx.params.event_id,
-          scanned: false,
-        });
-
-        // update number of attendees for this event
-        await Events.findOneAndUpdate(_idArg, { attendees: total, not_admitted: yet_to_scan });
-        // return the event
-        ctx.body = await Events.findOne(_idArg);
-        ctx.status = 200;
+        await Events.create(eventBody);
+        // // finds the data we just created and returns it as the body of response
+        ctx.status = 201;
+        ctx.body = {
+          result: "Event added!",
+          event: await Events.findOne(input_body)
+        }
       } else {
-        ctx.body = "unauthorized access";
-        ctx.status = 403;
+        // if event does not exist return this
+        ctx.status = 404;
+        ctx.body = {
+          result: "Event already exists",
+          event: await Events.findOne(input_body)
+        };
       }
     }
   } catch (err) {
@@ -68,7 +51,82 @@ const getEvent = async (ctx) => {
   }
 };
 
+const getEvent = async (ctx) => {
+
+  // event_id passed through url
+  const { input_organizer, input_event } = ctx.request.body
+  // event args
+  const eventArgs = {
+    _id: input_event
+  }
+
+  try {
+    // check if id is same as input event_id
+    const check = await Events.exists(eventArgs);
+
+    if (check === null) {
+      // if event does not exist return this
+      ctx.status = 404;
+      ctx.body = {
+        result: "event does not exist",
+        event: null
+      };
+    } else {
+
+      // Correct event
+      const event = await Events.findOne(eventArgs);
+
+      if (event.organizer === input_organizer) {
+
+        // count total number of attendees for this event
+        const total = await Attendees.countDocuments({ event_id: input_id });
+
+        const scanned = await Attendees.countDocuments({
+          event_id: input_event,
+          scanned: true,
+        });
+
+        const yet_to_scan = await Attendees.countDocuments({
+          event_id: input_event,
+          scanned: false,
+        });
+
+        // Updated Event scanned list 
+        const updateArgs = {
+          attendees: total,
+          not_admitted: yet_to_scan,
+          admitted: scanned
+        }
+
+        // update number of attendees for this event
+        await Events.findOneAndUpdate(eventArgs, updateArgs);
+
+        // return the event
+        ctx.status = 200;
+        ctx.body = {
+          result: "Event found!",
+          event: await Events.findOne(eventArgs)
+        };
+      } else {
+        ctx.status = 403;
+        ctx.body = {
+          result: "Unauthorized access",
+          event: null
+        };
+      }
+    }
+  } catch (err) {
+    ctx.status = 500;
+    throw err;
+  }
+};
+
+const deleteEvent = async (ctx) => {
+
+}
+
 module.exports = {
   addEvent,
   getEvent,
+  deleteEvent
 };

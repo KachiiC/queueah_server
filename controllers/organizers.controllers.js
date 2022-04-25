@@ -1,44 +1,61 @@
-const Attendees = require("../models/attendees.models");
 const Events = require("../models/events.models");
 const Organizers = require("../models/organizers.models");
 
 const organizerFinder = async (ctx) => {
+
   // take body from request
   const req_body = ctx.request.body;
   // takes organizer_id from the params
-  const params_email = ctx.params.organizer_email;
+  const { email, input_organizer } = ctx.request.body;
 
   try {
-    // Checks params and body have same email
-    if (params_email !== req_body.email) {
-      ctx.body = "email from body and params do not match";
-      ctx.status = 500;
+    // check for an organizer with same email
+    const checkExists = await Organizers.exists({ email: email });
+
+    if (checkExists === null) {
+      // if they don't exist create them
+      await Organizers.create(req_body);
+
+      // then return newly created organizer
+      ctx.status = 201;
+      ctx.body = {
+        result: "Organizer was not found, but new organizer created!",
+        organizer: await Organizers.findOne(req_body)
+      }
     } else {
-      // check for an organizer with same email
-      const check = await Organizers.exists({ email: params_email });
 
-      if (check === null) {
-        // if they don't exist create them
-        await Organizers.create(req_body);
-        // then return newly created organizer
-        ctx.body = await Organizers.findOne(req_body);
-        ctx.status = 201;
+      const checkCredentials = await Organizers.exists({ email: email, _id: input_organizer });
+
+      if (checkCredentials === null) {
+
+        ctx.status = 404;
+        ctx.body = {
+          result: "Organizer and email do not match!",
+          organizer: await Organizers.findOne(req_body)
+        }
+
       } else {
-        // get all events by organizer from params
-        const events = await Events.find({ organizer: check._id });
-        // update organizer events accordingly
 
-        const res = await Organizers.findOneAndUpdate(
+        // get all events by organizer from params
+        const events = await Events.find({ organizer: checkCredentials._id });
+
+        // update organizer events accordingly
+        const found = await Organizers.findOneAndUpdate(
           // find organizer by email
-          { _id: check._id },
+          { _id: checkCredentials._id },
           // update events
           { events }
         );
+
         // return organizer
-        ctx.body = res;
         ctx.status = 200;
+        ctx.body = {
+          result: "Organizer Found!",
+          organizer: found
+        };
       }
     }
+
   } catch (err) {
     ctx.status = 500;
     throw err;

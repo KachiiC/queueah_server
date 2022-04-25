@@ -9,28 +9,14 @@ const qrCodeMaker = ({ organizer_id, event_id, attendee }) => {
 }
 
 const emailParams = (data) => {
-    const {
-        date,
-        event_name,
-        attendee_name,
-        ticket_id,
-        qr_code,
-        event,
-        recipient,
-    } = data
+
+    const { SERVICE_ID, TEMPLATE_ID, USER_ID } = process.env
+
     return {
-        service_id: process.env.SERVICE_ID,
-        template_id: process.env.TEMPLATE_ID,
-        user_id: process.env.USER_ID,
-        template_params: {
-            date,
-            event_name,
-            attendee_name,
-            ticket_id,
-            qr_code,
-            event,
-            recipient,
-        }
+        service_id: SERVICE_ID,
+        template_id: TEMPLATE_ID,
+        user_id: USER_ID,
+        template_params: data
     }
 }
 
@@ -45,18 +31,43 @@ const emailArgs = (data) => {
     }
 }
 
+// Formats email to send off 
+const emailObjectFormatter = (event_data, attendee_data) => {
+
+    const { date, event_name, organizer } = event_data
+
+    return attendee_data.map(attendee => {
+
+        const qr_data = {
+            organizer_id: organizer,
+            event_id: attendee.event_id,
+            attendee: attendee._id
+        }
+
+        return {
+            date,
+            event_name,
+            attendee_name: `${attendee.first_name} ${attendee.surname}`,
+            ticket_id: attendee._id,
+            qr_code: qrCodeMaker(qr_data),
+            event: attendee.event_id,
+            recipient: attendee.email
+        }
+    })
+}
+
+// Sends email to client. 
 const postEmail = (data) => {
     node_fetch('https://api.emailjs.com/api/v1.0/email/send',
         emailArgs(data))
-        .then(res => {
-            console.log(res)
-        })
+        .then(res => console.log(res))
         .catch(err => console.log(err))
 }
 
 module.exports = {
-    emailArgs,
+    qrCodeMaker,
     emailParams,
-    postEmail,
-    qrCodeMaker
+    emailArgs,
+    emailObjectFormatter,
+    postEmail
 }
