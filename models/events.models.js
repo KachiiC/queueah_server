@@ -3,18 +3,20 @@ const Schema = mongoose.Schema;
 const { urlTypes } = require("../helpers/validate.helpers");
 
 const eventsSchema = new Schema({
+  // Need to Add
+  event_name: String,
+  description: String,
+  venue_name: String,
   address: String,
-  admitted: Number,
-  adults_only: Boolean,
-  attendees: { type: Number, default: 0 },
+  website: urlTypes,
   start_date: Date,
   end_date: Date,
-  description: String,
-  event_name: String,
-  not_admitted: Number,
+  adults_only: Boolean,
+  // Automatically Added
   organizer: String,
-  venue_name: String,
-  website: urlTypes,
+  attendees: { type: Number, default: 0 },
+  admitted: Number,
+  not_admitted: Number,
 });
 
 const Events = mongoose.model("events", eventsSchema);
