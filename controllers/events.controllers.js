@@ -79,7 +79,7 @@ const getEvent = async (ctx) => {
       if (event.organizer === input_organizer) {
 
         // count total number of attendees for this event
-        const total = await Attendees.countDocuments({ event_id: input_id });
+        const total = await Attendees.countDocuments({ event_id: input_event });
 
         const scanned = await Attendees.countDocuments({
           event_id: input_event,

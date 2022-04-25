@@ -42,7 +42,6 @@ const addAttendees = async (ctx) => {
           }
         };
 
-        console.log(ctx.request.files.csv_file.filepath)
         const results = await csvToJs(ctx.request.files.csv_file.filepath, {})
         
         // if body is array, create for each object in body, otherwise just create on body

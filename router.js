@@ -32,7 +32,7 @@ router
   .put("/scan/:attendee_id", scanAttendees)
   // EVENTS
   .post("/add_event", addEvent)
-  .get("/events_list", getEvent)
+  .get("/event", getEvent)
   // ORGANIZERS
   .put("/organizer", organizerFinder)
   // EMAIL
