@@ -122,8 +122,8 @@ const getAttendees = async (ctx) => {
 
 const scanAttendees = async (ctx) => {
   // param arguments
-  const { attendee_id } = ctx.params;
-  const { input_organizer, input_event } = ctx.request.body
+  const { attendee_id, input_organizer, input_event } = ctx.params;
+
   const evt_params = { event_id: input_event, _id: attendee_id };
 
   try {
@@ -254,7 +254,7 @@ const deleteAttendee = async (ctx) => {
 }
 
 const getSingleAttendee = async (ctx) => {
-  
+
   const { input_organizer, input_event, attendee_id } = ctx.params;
 
   const evt_params = { event_id: input_event, _id: attendee_id };

@@ -32,7 +32,7 @@ router
   .get("/single_attendee/:input_organizer/:input_event/:attendee_id", getSingleAttendee)
   .post("/add_attendees/:input_organizer/:input_event", KoaBody(bodyArg), addAttendees)
   .delete("/delete_attendee/:attendee_id", deleteAttendee)
-  .put("/scan/:attendee_id", scanAttendees)
+  .put("/scan/:input_organizer/:input_event/:attendee_id", scanAttendees)
 
   // EVENTS
   .post("/add_event", addEvent)
