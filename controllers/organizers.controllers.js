@@ -6,7 +6,7 @@ const organizerFinder = async (ctx) => {
   // take body from request
   const req_body = ctx.request.body;
   // takes organizer_id from the params
-  const { email, input_organizer } = ctx.request.body;
+  const { email, name } = ctx.request.body;
 
   try {
     // check for an organizer with same email
@@ -24,7 +24,7 @@ const organizerFinder = async (ctx) => {
       }
     } else {
 
-      const checkCredentials = await Organizers.exists({ email: email, _id: input_organizer });
+      const checkCredentials = await Organizers.exists({ email: email, name: name });
 
       if (checkCredentials === null) {
 

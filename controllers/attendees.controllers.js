@@ -43,7 +43,7 @@ const addAttendees = async (ctx) => {
         };
 
         const results = await csvToJs(ctx.request.files.csv_file.filepath, {})
-        
+
         // if body is array, create for each object in body, otherwise just create on body
         AttendeeMaker(results, creator)
 
@@ -80,7 +80,7 @@ const addAttendees = async (ctx) => {
 const getAttendees = async (ctx) => {
 
   // id from request body
-  const { input_event, input_organizer } = ctx.request.body
+  const { input_event, input_organizer } = ctx.params
 
   try {
     // check if event exists
@@ -253,9 +253,67 @@ const deleteAttendee = async (ctx) => {
   }
 }
 
+const getSingleAttendee = async (ctx) => {
+  
+  const { input_organizer, input_event, attendee_id } = ctx.params;
+
+  const evt_params = { event_id: input_event, _id: attendee_id };
+
+  try {
+    // check if attendee and event exists
+    const checkAttendee = await Attendees.exists(evt_params);
+
+    if (checkAttendee == null) {
+      // if attendee does not exist return this
+      ctx.status = 404;
+      ctx.body = {
+        result: "This is an invalid qr code...",
+        attendee: null
+      };
+    } else {
+
+      // If attendee exists then event should also exist so get event
+      const event = await Events.findOne({ _id: input_event });
+
+      // if correct organizer then do this
+      if (event.organizer === input_organizer) {
+        // correct attendee
+        const admission_status = await Attendees.findOne({ _id: attendee_id, scanned: false })
+
+        if (admission_status === null) {
+
+          // return this if attendee exists but already scanned
+          ctx.status = 200;
+          ctx.body = {
+            result: "already scanned!",
+            attendee: await Attendees.findOne({ _id: attendee_id })
+          };
+
+        } else {
+          ctx.body = {
+            result: "ready to scanned!",
+            attendee: await Attendees.findOne({ _id: attendee_id })
+          }
+        }
+      } else {
+        ctx.body = {
+          result: "Unauthorised access",
+          attendee: null
+        };
+        ctx.status = 404
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    ctx.status = 500;
+    throw err;
+  }
+}
+
 module.exports = {
   addAttendees,
   getAttendees,
   scanAttendees,
-  deleteAttendee
+  deleteAttendee,
+  getSingleAttendee
 };

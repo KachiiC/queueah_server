@@ -2,7 +2,7 @@ const node_fetch = require('node-fetch');
 
 const qrCodeMaker = ({ organizer_id, event_id, attendee }) => {
 
-    const herouUrl = `https%3A%2F%2Fqueueah.herokuapp.com%2Fscan%2F${organizer_id}%2F${event_id}%2F${attendee}&chs=300x300&choe=UTF-8&chld=L|2`
+    const herouUrl = `https%3A%2F%2Fqueueah.herokuapp.com%2Fsingle_attendee%2F${organizer_id}%2F${event_id}%2F${attendee}&chs=300x300&choe=UTF-8&chld=L|2`
     const googleApiUrl = `https://chart.googleapis.com/chart?cht=qr&chl=${herouUrl}&chs=180x180&choe=UTF-8&chld=L|2`
 
     return googleApiUrl
@@ -64,6 +64,7 @@ const postEmail = (data) => {
         .then(res => console.log(res))
         .catch(err => console.log(err))
 }
+
 
 module.exports = {
     qrCodeMaker,

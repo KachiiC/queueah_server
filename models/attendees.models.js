@@ -4,13 +4,14 @@ const { scannedTypes, genderTypes } = require("../helpers/attendee.helpers");
 const { emailTypes } = require("../helpers/validate.helpers");
 
 const attendeesSchema = new Schema({
-  event_id: String,
-  event_name: String,
-  email: emailTypes,
   first_name: String,
+  surname: String,
+  email: emailTypes,
   gender: genderTypes,
+  // automatically added
+  event_name: String,
+  event_id: String,
   scanned: scannedTypes,
-  surname: String
 });
 
 const Attendees = mongoose.model("attendees", attendeesSchema);

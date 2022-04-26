@@ -121,6 +121,34 @@ const getEvent = async (ctx) => {
   }
 };
 
+const getOrganizerEvents = async (ctx) => {
+
+  try {
+
+    const checkOrganizer = await Organizers.exists({ _id: ctx.params.organizer_id })
+
+    if (checkOrganizer === null) {
+      // if event does not exist return this
+      ctx.status = 404;
+      ctx.body = {
+        result: "organizer does not exist",
+        events: null
+      };
+    } else {
+
+      // return the event
+      ctx.status = 200;
+      ctx.body = {
+        result: "Organizer found!",
+        events: await Events.find({ organizer: ctx.params.organizer_id })
+      }
+    }
+  } catch (err) {
+    ctx.status = 500;
+    throw err;
+  }
+};
+
 const deleteEvent = async (ctx) => {
 
 }
@@ -128,5 +156,6 @@ const deleteEvent = async (ctx) => {
 module.exports = {
   addEvent,
   getEvent,
-  deleteEvent
+  deleteEvent,
+  getOrganizerEvents
 };

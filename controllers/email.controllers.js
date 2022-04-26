@@ -1,7 +1,7 @@
 const Attendees = require('../models/attendees.models');
 const Events = require('../models/events.models');
 const Organizers = require('../models/organizers.models');
-const { emailObjectFormatter } = require('../helpers/email.helper');
+const { emailObjectFormatter, postEmail } = require('../helpers/email.helper');
 
 const sendEventEmails = async ctx => {
 
@@ -9,8 +9,9 @@ const sendEventEmails = async ctx => {
 
     try {
         // check if event exists
-        const eventCheck = await Events.exists({ _id: input_event });
-        // if event does not exist return this
+        const eventCheck = await Events.findOne({ _id: input_event });
+
+        // // if event does not exist return this
         if (eventCheck === null) {
             ctx.body = {
                 result: "Event does not exist"
@@ -35,7 +36,7 @@ const sendEventEmails = async ctx => {
                 const res = emailObjectFormatter(event, attendees)
 
                 // Email for each 
-                res.forEach((obj) => console.log(obj))
+                res.forEach((obj) => postEmail(obj))
                 ctx.status = 200
                 ctx.body = {
                     result: "Emails sent!",
@@ -49,5 +50,7 @@ const sendEventEmails = async ctx => {
         throw err
     }
 }
+
+
 
 module.exports = sendEventEmails
