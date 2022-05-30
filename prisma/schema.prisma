@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Organizer {
+  id     String  @unique
+  name   String
+  events Event[]
+}
+
+model Event {
+  // Need to Add
+  event_id     Int        @unique
+  event_name   String
+  description  String
+  venue_name   String
+  address      String
+  website      String
+  start_date   DateTime
+  end_date     DateTime
+  adults_only  Boolean
+  organizer_id String
+  // Automatically Added
+  organizer    Organizer? @relation(fields: [organizer_id], references: [id])
+  attendees    Int        @default(0)
+  admitted     Int        @default(0)
+  not_admitted Int        @default(0)
+  attendee     Attendee[]
+}
+
+model Attendee {
+  attendee_id String  @unique
+  first_name  String
+  surname     String
+  email       String
+  gender      String
+  // automatically added
+  event_name  String
+  event_id    Int
+  scanned     Boolean @default(false)
+  event       Event   @relation(fields: [event_id], references: [event_id])
+}

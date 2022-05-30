@@ -2,17 +2,16 @@
 require("dotenv").config();
 // KOA IMPORTS
 const Koa = require("koa");
-const koa_bodyparser = require("koa-bodyparser");
-const koa_cors = require("@koa/cors");
+const bodyparser = require("koa-bodyparser");
+const cors = require("@koa/cors");
+const morgan = require('koa-morgan');
+const router = require("./router").routes();
 // APP VARIABLES
-const app = new Koa();
-const port = process.env.PORT || 8000;
-const router = require("./router");
+const App = new Koa();
+const Port = process.env.PORT || 8000;
 
-app.use(koa_bodyparser())
-.use(koa_cors())
-.use(router.routes());
-
-app.listen(port, () => {
-  console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
-});
+App.use(bodyparser())
+  .use(cors())
+  .use(morgan('short'))
+  .use(router)
+  .listen(Port, () => console.log(`🚀 Server listening http://127.0.0.1:${Port}/ 🚀`));

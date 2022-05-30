@@ -34,7 +34,7 @@ const emailArgs = (data) => {
 // Formats email to send off 
 const emailObjectFormatter = (event_data, attendee_data) => {
 
-    const { start_date, end_date , event_name, organizer } = event_data
+    const { start_date, end_date, event_name, organizer } = event_data
 
     return attendee_data.map(attendee => {
 
@@ -45,7 +45,7 @@ const emailObjectFormatter = (event_data, attendee_data) => {
         }
 
         return {
-            start_date, 
+            start_date,
             end_date,
             event_name,
             attendee_name: `${attendee.first_name} ${attendee.surname}`,
