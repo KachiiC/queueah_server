@@ -51,6 +51,4 @@ const sendEventEmails = async ctx => {
     }
 }
 
-
-
 module.exports = sendEventEmails

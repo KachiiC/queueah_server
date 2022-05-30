@@ -65,7 +65,6 @@ const postEmail = (data) => {
         .catch(err => console.log(err))
 }
 
-
 module.exports = {
     qrCodeMaker,
     emailParams,
