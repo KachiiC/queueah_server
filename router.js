@@ -2,45 +2,24 @@
 const KoaBody = require('koa-body')
 const Router = require("koa-router");
 const router = new Router();
-// CONTROLLERS
-const {
-  // ATTENDEES
-  addAttendees,
-  getAttendees,
-  // EVENTS
-  addEvent,
-  getEvent,
-  // ORGANIZERS
-  organizerFinder,
-  scanAttendees,
-  // EMAIL
-  sendEventEmails,
-  deleteAttendee
-} = require("./controllers");
-const { getSingleAttendee } = require('./controllers/attendees.controllers');
-const { getOrganizerEvents } = require('./controllers/events.controllers');
-
-const bodyArg = { 
-  multipart: true, 
-  uploadDir: '.' 
-}
+const { addAttendees, scanAttendee, getAttendee } = require('./controllers/attendee.controllers');
+const { addEvent, getEvent } = require('./controllers/event.controllers');
+const organizerFinder = require('./controllers/organizer.controllers');
+// HELPERS
+const { attendeeBodyArg } = require('./helpers/attendee.helpers');
 
 router
   .get("", ctx => ctx.body = "Home route")
-  // ATTENDEES
-  .get("/attendees_list/:input_organizer/:input_event", getAttendees)
-  .get("/single_attendee/:input_organizer/:input_event/:attendee_id", getSingleAttendee)
-  .post("/add_attendees/:input_organizer/:input_event", KoaBody(bodyArg), addAttendees)
-  .delete("/delete_attendee/:attendee_id", deleteAttendee)
-  .put("/scan/:input_organizer/:input_event/:attendee_id", scanAttendees)
-
+  // ORGANIZERS
+  .patch("/organizer", organizerFinder)
   // EVENTS
   .post("/add_event", addEvent)
-  .get("/events/:organizer_id", getOrganizerEvents)
-  .get("/event/:input_organizer/:input_event", getEvent)
-  // ORGANIZERS
-  .put("/organizer", organizerFinder)
-  // EMAIL
-  .post("/email", sendEventEmails)
+  .get("/get_event/organizer=:input_organizer&event=:input_event", getEvent)
+  // ATTENDEES
+  .post("/add_attendees/:input_organizer/:input_event", KoaBody(attendeeBodyArg), addAttendees)
+  .get('/attendee=:attendee_id', getAttendee)
+  .put('/scan=:attendee_id', scanAttendee)
+// EMAIL
+// .post("/email", sendEventEmails)
 
 module.exports = router;
