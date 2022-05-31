@@ -1,5 +1,5 @@
-const { event, attendee } = require('../prisma');
-const { emailObjectFormatter } = require('../helpers/email.helper');
+const { event } = require('../prisma');
+const { emailObjectFormatter, postEmail } = require('../helpers/email.helper');
 
 const sendEventEmails = async (ctx) => {
 
@@ -7,7 +7,10 @@ const sendEventEmails = async (ctx) => {
 
     try {
         // check if event exists
-        const eventCheck = await event.findUnique({ where: { event_id: input_event } });
+        const eventCheck = await event.findUnique({
+            where: { event_id: input_event },
+            include: { attendee: true }
+        });
 
         // // if event does not exist return this
         if (!eventCheck) {
@@ -25,23 +28,21 @@ const sendEventEmails = async (ctx) => {
                 attendees: null
             }
         } else {
-            // attendees for event
-            const eventAttendees = await attendee.findMany({ where: { event_id: input_event } })
-            
             // return an array of objects for email template
-            // const res = emailObjectFormatter(event, eventAttendees)
+            const emailData = emailObjectFormatter(eventCheck)
 
             // Email for each 
-            // res.forEach((obj) => postEmail(obj))
+            emailData.forEach(obj => postEmail(obj))
+
             ctx.status = 200
             ctx.body = {
                 result: "Emails sent!",
-                attendees: eventAttendees
+                attendees: eventCheck.attendee
             }
         }
     }
-
     catch (err) {
+        ctx.status = 500
         console.log(err)
         throw err
     }
