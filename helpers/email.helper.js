@@ -5,7 +5,7 @@ const qrCodeMaker = (attendee_id) => {
 
     const herouUrl = `https%3A%2F%2Fqueueah.herokuapp.com%2Fscan%3D${attendee_id}`
 
-    return `"https://chart.googleapis.com/chart?cht=qr&chl=${herouUrl}&chs=500x500&choe=UTF-8&chld=L|2"`
+    return `https://chart.googleapis.com/chart?cht=qr&chl=${herouUrl}&chs=500x500&choe=UTF-8&chld=L|2`
 }
 
 const emailParams = (data) => {
