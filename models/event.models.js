@@ -1,23 +1,58 @@
 const { event, attendee } = require('../prisma');
 
-const updateEvent = async (event_id) => {
+const createEvent = async (id, input_body) => {
 
-    const attendeesFinder = await attendee.findMany({
-        where: { event_id },
-    })
+    const { create } = event
 
-    await event.update({
-        where: { event_id },
-        data: {
-            admitted: attendeesFinder.filter(obj => obj.scanned).length,
-            not_admitted: attendeesFinder.filter(obj => !obj.scanned).length,
-            attendees: attendeesFinder.length
-        }
-    })
+    try {
+        await create({
+            data: {
+                ...input_body,
+                organizer: { connect: { id } }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        throw (err);
+    }
+}
 
-    // return results
+const findEvent = async event_id => {
+    try {
+        const correctEvent = await findUnique({ where: { event_id } });
+
+        return correctEvent
+
+    } catch (err) {
+        console.log(err)
+        throw (err)
+    }
+
+}
+
+const updateEvent = async event_id => {
+    try {
+        const attendeesFinder = await attendee.findMany({
+            where: { event_id },
+        })
+
+        await event.update({
+            where: { event_id },
+            data: {
+                admitted: attendeesFinder.filter(obj => obj.scanned).length,
+                not_admitted: attendeesFinder.filter(obj => !obj.scanned).length,
+                attendees: attendeesFinder.length
+            }
+        })
+    } catch (err) {
+        console.log(err)
+        throw (err)
+    }
+
 }
 
 module.exports = {
-    updateEvent
+    createEvent,
+    updateEvent,
+    findEvent
 }

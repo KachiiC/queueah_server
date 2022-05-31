@@ -1,14 +1,14 @@
 const node_fetch = require('node-fetch');
 const { SERVICE_ID, TEMPLATE_ID, USER_ID } = process.env
 
-const qrCodeMaker = (attendee_id) => {
+const qrCodeMaker = attendee_id => {
 
     const herouUrl = `https%3A%2F%2Fqueueah.herokuapp.com%2Fscan%3D${attendee_id}`
 
     return `https://chart.googleapis.com/chart?cht=qr&chl=${herouUrl}&chs=500x500&choe=UTF-8&chld=L|2`
 }
 
-const emailParams = (data) => {
+const emailParams = data => {
 
     return {
         service_id: SERVICE_ID,
@@ -18,19 +18,17 @@ const emailParams = (data) => {
     }
 }
 
-const emailArgs = (data) => {
+const emailArgs = data => {
 
     return {
         method: 'POST',
         body: JSON.stringify(emailParams(data)),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
     }
 }
 
 // Formats email to send off 
-const emailObjectFormatter = (event_data) => {
+const emailObjectFormatter = event_data => {
 
     const {
         event_name,
@@ -68,7 +66,7 @@ const emailObjectFormatter = (event_data) => {
 }
 
 // Sends email to client. 
-const postEmail = (data) => {
+const postEmail = data => {
     node_fetch('https://api.emailjs.com/api/v1.0/email/send', emailArgs(data))
         .then(res => console.log(res))
         .catch(err => console.log(err))

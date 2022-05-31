@@ -1,7 +1,7 @@
 const { createReadStream } = require('fs');
 const csv = require('csv-parser')
 
-const csvToJs = (path) => {
+const csvToJs = path => {
 
   const results = []
 

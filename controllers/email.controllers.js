@@ -1,7 +1,7 @@
 const { event } = require('../prisma');
 const { emailObjectFormatter, postEmail } = require('../helpers/email.helper');
 
-const sendEventEmails = async (ctx) => {
+const sendEventEmails = async ctx => {
 
     const { input_organizer, input_event } = ctx.request.body
 
@@ -20,6 +20,7 @@ const sendEventEmails = async (ctx) => {
                 attendees: null
             };
         }
+
         // if organizer does not exists
         if (eventCheck.organizer_id !== input_organizer) {
             ctx.status = 404
@@ -42,8 +43,8 @@ const sendEventEmails = async (ctx) => {
         }
     }
     catch (err) {
-        ctx.status = 500
         console.log(err)
+        ctx.status = 500
         throw err
     }
 }

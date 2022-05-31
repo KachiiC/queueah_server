@@ -1,16 +1,18 @@
 // ROUTER
-const KoaBody = require('koa-body')
+const KoaBody = require('koa-body');
 const Router = require("koa-router");
 const router = new Router();
+// ORGANIZERS
+const organizerFinder = require('./controllers/organizer.controllers');
+// EVENTS
+const { addEvent, getEvent } = require('./controllers/event.controllers');
+// ATTENDEES
 const { addAttendees, scanAttendee, getAttendee } = require('./controllers/attendee.controllers');
 const sendEventEmails = require('./controllers/email.controllers');
-const { addEvent, getEvent } = require('./controllers/event.controllers');
-const organizerFinder = require('./controllers/organizer.controllers');
 // HELPERS
 const { attendeeBodyArg } = require('./helpers/attendee.helpers');
 
-router
-  .get("/", ctx => ctx.body = "Home route")
+router.get("/", ctx => ctx.body = "Home route")
   // ORGANIZERS
   .patch("/organizer", organizerFinder)
   // EVENTS

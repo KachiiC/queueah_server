@@ -23,6 +23,19 @@ const createAttendees = async (path, event_name, event_id) => {
     return createData
 }
 
+const findAttendee = async attendee_id => {
+    try {
+        const correctAttendee = await attendee.findUnique({ where: { attendee_id } })
+        
+        return correctAttendee
+
+    } catch (err) {
+        console.log(err)
+        throw (err)
+    }
+}
+
 module.exports = {
-    createAttendees
+    createAttendees,
+    findAttendee
 }

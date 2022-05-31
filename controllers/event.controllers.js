@@ -6,7 +6,7 @@ const addEvent = async ctx => {
   // input body
   const { input_body, id } = ctx.request.body;
   const { event_id } = input_body
-  const { findUnique, create } = event
+  const { findUnique } = event
 
   try {
     // check if user exists by checking the id
@@ -22,7 +22,7 @@ const addEvent = async ctx => {
     }
 
     // check if event exists by id
-    const checkEvent = await findUnique({ where: { event_id } });
+    const checkEvent = await findEvent(event_id)
 
     if (checkEvent) {
       ctx.status = 404;
@@ -33,12 +33,7 @@ const addEvent = async ctx => {
     }
 
     // create the event
-    await create({
-      data: {
-        ...input_body,
-        organizer: { connect: { id } }
-      }
-    });
+    await createEvent(id, input_body)
 
     // // finds the data we just created and returns it as the body of response
     ctx.status = 201
@@ -48,6 +43,7 @@ const addEvent = async ctx => {
     };
 
   } catch (err) {
+    console.log(err)
     ctx.status = 500;
     throw err;
   }
@@ -95,6 +91,7 @@ const getEvent = async ctx => {
     };
 
   } catch (err) {
+    console.log(err)
     ctx.status = 500;
     throw err;
   }

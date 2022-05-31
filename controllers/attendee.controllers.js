@@ -1,5 +1,5 @@
 const { attendee, event } = require('../prisma');
-const { createAttendees } = require('../models/attendee.models');
+const { createAttendees, findAttendee } = require('../models/attendee.models');
 
 const addAttendees = async ctx => {
 
@@ -95,7 +95,7 @@ const scanAttendee = async ctx => {
 
   try {
     // check if attendee and event exists
-    const attendeeFinder = await attendee.findUnique({ where: { attendee_id } });
+    const attendeeFinder = await findAttendee(attendee_id);
 
     if (!attendeeFinder) {
       // if attendee does not exist return this
@@ -110,18 +110,18 @@ const scanAttendee = async ctx => {
       // return this if attendee exists but already scanned
       ctx.body = {
         result: "QR code already scanned!",
-        attendee: await attendee.findUnique({ where: { attendee_id } })
+        attendee: await findAttendee(attendee_id)
       };
     }
 
     await attendee.update({
       where: { attendee_id },
       data: { scanned: true }
-    })
+    });
 
     ctx.body = {
       result: "QR code now scanned!",
-      attendee: await attendee.findUnique({ where: { attendee_id } })
+      attendee: await findAttendee(attendee_id)
     };
 
     ctx.status = 200;

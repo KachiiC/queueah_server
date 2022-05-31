@@ -11,6 +11,7 @@ const organizerFinder = async ctx => {
     ctx.status = 200
 
   } catch (err) {
+    console.log(err)
     ctx.status = 500;
     throw err;
   }
