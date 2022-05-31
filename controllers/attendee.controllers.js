@@ -4,7 +4,7 @@ const { createAttendees } = require('../models/attendee.models');
 const addAttendees = async ctx => {
 
   // take the request body and params
-  const { input_organizer, input_event } = ctx.params;
+  const { input_organizer, input_event } = ctx.request.body;
 
   const { findUnique } = event
 
@@ -33,7 +33,7 @@ const addAttendees = async ctx => {
         new_attendees: null
       };
     }
-    
+
     // turn csv file uploaded into js data
     const results = await createAttendees(
       ctx.request.files.csv_file.filepath,
