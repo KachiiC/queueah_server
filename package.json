@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KachiiC/queueah_server.git"
+    "url": "git+https://github.com/QueueAh/queueah_server.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KachiiC/queueah_server/issues"
+    "url": "https://github.com/QueueAh/queueah_server/issues"
   },
-  "homepage": "https://github.com/KachiiC/queueah_server#readme",
+  "homepage": "https://github.com/QueueAh/queueah_server#readme",
   "dependencies": {
     "@emailjs/browser": "^3.6.2",
     "@koa/cors": "^3.3.0",
@@ -32,6 +32,7 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
+    "@types/node": "^17.0.36",
     "prisma": "^3.14.0"
   }
 }
