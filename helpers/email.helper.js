@@ -1,4 +1,3 @@
-const { default: axios } = require('axios');
 const node_fetch = require('node-fetch');
 const { SERVICE_ID, TEMPLATE_ID, USER_ID } = process.env
 
